@@ -6,7 +6,6 @@ const MainPage = () => {
   const [count, setCount] = React.useState(0);
   const [audioTitle, setAudioTitle] = React.useState("");
   var videos = ["MCFEKjCWivU", "6ZfuNTqbHE8", "jJPMnTXl63E"];
-  const space = "        ";
 
   const Player = () => {
     React.useEffect(() => {

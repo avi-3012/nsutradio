@@ -15,12 +15,12 @@ const PageBtn = ({ stateChanger }) => {
 };
 
 const Page = () => {
-  const [messages, setMessages] = React.useState([]);
-  const [message, setMessage] = React.useState("");
+  //   const [messages, setMessages] = React.useState([]);
+  //   const [message, setMessage] = React.useState("");
   const [name, setName] = React.useState("");
   const [nameStored, setNameStored] = React.useState(false);
-  const [socket, setSocket] = React.useState(null);
-  const [connected, setConnected] = React.useState(false);
+  //   const [socket, setSocket] = React.useState(null);
+  //   const [connected, setConnected] = React.useState(false);
 
   React.useEffect(() => {
     const nameCheck = localStorage.getItem("name");
