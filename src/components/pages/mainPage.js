@@ -19,8 +19,8 @@ const MainPage = () => {
       fetchData();
     }, []);
     const opts = {
-      height: "200",
-      width: "200",
+      height: "0",
+      width: "0",
       playerVars: {
         // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
