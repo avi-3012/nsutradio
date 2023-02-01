@@ -1,28 +1,32 @@
 import React from "react";
+import io from "socket.io-client";
 import "../styles/chatRoom.css";
+
+const socket_key = process.env.REACT_APP_SOCKET_URL;
+const socket = io.connect(socket_key);
 
 const PageBtn = ({ stateChanger }) => {
   return (
     <React.Fragment>
-      <button
-        onClick={() => stateChanger(true)}
-        className="chatRoomContentButton"
-      >
-        Let's Start
-      </button>
+      <div className="ChatroomBtn" onClick={() => stateChanger(true)}>
+        Chat Room
+        <div className="ChatroomBtnImage"></div>
+      </div>
     </React.Fragment>
   );
 };
 
 const Page = () => {
-  //   const [messages, setMessages] = React.useState([]);
+  const [message, setMessage] = React.useState([]);
   //   const [message, setMessage] = React.useState("");
   const [name, setName] = React.useState("");
   const [nameStored, setNameStored] = React.useState(false);
   //   const [socket, setSocket] = React.useState(null);
   //   const [connected, setConnected] = React.useState(false);
+  console.log(socket_key);
 
   React.useEffect(() => {
+    console.log("useEffect running");
     const nameCheck = localStorage.getItem("name");
     if (nameCheck) {
       setNameStored(true);
@@ -37,17 +41,16 @@ const Page = () => {
   if (!nameStored) {
     return (
       <React.Fragment>
-        <div className="chatRoomContentText">nsutRADIO</div>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
-          className="chatRoomContentInput"
+          className="chatRoomInitialInput"
         />
         <button
           onClick={() => handleClickSubmit(name)}
-          className="chatRoomContentButton"
+          className="chatRoomInitialButton"
           style={{ marginTop: "10px" }}
         >
           Enter
@@ -57,9 +60,25 @@ const Page = () => {
   } else {
     return (
       <React.Fragment>
-        <div className="chatRoomContentText">nsutRADIO</div>
-        <div className="chatRoomContentText">
-          Welcome {localStorage.getItem("name")}!!
+        <div className="chatRoomFinalContainer">
+          <div className="chatRoomFinalContent"></div>
+          <div className="chatRoomFinalMessage">
+            <div className="chatRoomFinalMessageContainer">
+              <input
+                type="text"
+                className="chatRoomFinalMessageInputContainer"
+                placeholder="Send Message"
+                value={message}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setMessage(e.target.value);
+                }}
+              />
+            </div>
+            <div className="chatRoomFinalSend">
+              <div className="chatRoomFinalSendBtnContainer"></div>
+            </div>
+          </div>
         </div>
       </React.Fragment>
     );

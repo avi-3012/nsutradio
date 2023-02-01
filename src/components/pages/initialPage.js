@@ -31,11 +31,7 @@ const InitialPage = ({ stateChanger }) => {
       setTimeout(() => {
         stateChanger(true);
       }, 4000);
-      return (
-        <div className="initialPageContentText">
-          Welcome {localStorage.getItem("name")}!!
-        </div>
-      );
+      return <div className="initialPageContentText">Welcome!!</div>;
     }
     return (
       <React.Fragment>
