@@ -1,5 +1,5 @@
 import React from "react";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import "../styles/chatRoom.css";
 
 const socket_key = process.env.REACT_APP_SOCKET_URL;
