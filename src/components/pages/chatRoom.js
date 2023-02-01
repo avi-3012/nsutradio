@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import "../styles/chatRoom.css";
 
 const socket_key = process.env.REACT_APP_SOCKET_URL;
-const socket = io.connect(socket_key);
+// const socket = io.connect(socket_key);
 
 const PageBtn = ({ stateChanger }) => {
   return (
