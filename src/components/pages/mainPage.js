@@ -4,10 +4,11 @@ import YouTube from "react-youtube";
 
 const MainPage = () => {
   const [count, setCount] = React.useState(0);
-  const [audioTitle, setAudioTitle] = React.useState("");
-  var videos = ["MCFEKjCWivU", "6ZfuNTqbHE8", "jJPMnTXl63E"];
+  const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
+  var videos = ["jJPMnTXl63E", "MCFEKjCWivU", "6ZfuNTqbHE8"];
 
   const Player = () => {
+    const [seekPosition] = React.useState(0);
     React.useEffect(() => {
       const fetchData = async () => {
         const response = await fetch(
@@ -31,10 +32,18 @@ const MainPage = () => {
     const onEnd = () => {
       setCount(count + 1);
     };
+    const onReady = (event) => {
+      event.target.seekTo(seekPosition);
+    };
 
     return (
       <div id="player">
-        <YouTube videoId={videos[count]} opts={opts} onEnd={onEnd} />
+        <YouTube
+          videoId={videos[count]}
+          opts={opts}
+          onReady={onReady}
+          onEnd={onEnd}
+        />
       </div>
     );
   };

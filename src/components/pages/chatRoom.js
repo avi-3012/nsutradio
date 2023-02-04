@@ -1,9 +1,14 @@
 import React from "react";
-// import io from "socket.io-client";
+// import { Socket } from "socket.io-client";
+import io from "socket.io-client";
 import "../styles/chatRoom.css";
 
 const socket_key = process.env.REACT_APP_SOCKET_URL;
-// const socket = io.connect(socket_key);
+const socket = io.connect(socket_key);
+socket.emit("join");
+socket.on("recieve_message", (data) => {
+  console.log(data);
+});
 
 const PageBtn = ({ stateChanger }) => {
   return (
@@ -16,13 +21,10 @@ const PageBtn = ({ stateChanger }) => {
   );
 };
 
-const Page = () => {
-  const [message, setMessage] = React.useState([]);
-  //   const [message, setMessage] = React.useState("");
+const Page = ({ stateChanger }) => {
+  const [message, setMessage] = React.useState("");
   const [name, setName] = React.useState("");
   const [nameStored, setNameStored] = React.useState(false);
-  //   const [socket, setSocket] = React.useState(null);
-  //   const [connected, setConnected] = React.useState(false);
   console.log(socket_key);
 
   React.useEffect(() => {
@@ -36,6 +38,41 @@ const Page = () => {
   const handleClickSubmit = (name) => {
     localStorage.setItem("name", name);
     setNameStored(true);
+  };
+
+  const sendMessage = React.useCallback(() => {
+    var data = [localStorage.getItem("name"), message];
+    if (
+      message === "" ||
+      message === null ||
+      data[0] === "" ||
+      data[0] === null
+    ) {
+      if (data[0] === "" || data[0] === null) {
+        alert("Invalid Name!! Please reload the page.");
+        return;
+      }
+      return;
+    }
+
+    socket.emit("message", data);
+    setMessage("");
+  }, [message]);
+
+  React.useEffect(() => {
+    if (nameStored) {
+      document.getElementsByClassName(
+        "chatRoomFinalMessageInputContainer"
+      )[0].onkeydown = function (e) {
+        if (e.keyCode === 13) {
+          sendMessage();
+        }
+      };
+    }
+  }, [nameStored, sendMessage]);
+
+  const closeChatRoom = () => {
+    stateChanger(false);
   };
 
   if (!nameStored) {
@@ -76,7 +113,12 @@ const Page = () => {
               />
             </div>
             <div className="chatRoomFinalSend">
-              <div className="chatRoomFinalSendBtnContainer"></div>
+              <div
+                className="chatRoomFinalCloseBtnContainer"
+                onClick={() => {
+                  closeChatRoom();
+                }}
+              ></div>
             </div>
           </div>
         </div>
@@ -91,7 +133,11 @@ const Chatroom = () => {
   return (
     <React.Fragment>
       <div className="chatRoomContainer">
-        {page ? <Page /> : <PageBtn stateChanger={setPage} />}
+        {page ? (
+          <Page stateChanger={setPage} />
+        ) : (
+          <PageBtn stateChanger={setPage} />
+        )}
       </div>
     </React.Fragment>
   );
