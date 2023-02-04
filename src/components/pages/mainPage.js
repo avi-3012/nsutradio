@@ -26,7 +26,7 @@ const MainPage = () => {
         // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
         disablekb: 1,
-        controls: 1,
+        controls: 0,
       },
     };
     const onEnd = () => {

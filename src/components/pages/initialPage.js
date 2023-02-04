@@ -20,7 +20,7 @@ const InitialPage = ({ stateChanger }) => {
           onClick={() => handleClick()}
           className="initialPageContentButton"
         >
-          Let's Start
+          Join
         </button>
       </React.Fragment>
     );

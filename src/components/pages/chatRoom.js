@@ -6,9 +6,6 @@ import "../styles/chatRoom.css";
 const socket_key = process.env.REACT_APP_SOCKET_URL;
 const socket = io.connect(socket_key);
 socket.emit("join");
-socket.on("recieve_message", (data) => {
-  console.log(data);
-});
 
 const PageBtn = ({ stateChanger }) => {
   return (
@@ -22,7 +19,6 @@ const PageBtn = ({ stateChanger }) => {
 };
 
 const Page = ({ stateChanger }) => {
-  const [message, setMessage] = React.useState("");
   const [name, setName] = React.useState("");
   const [nameStored, setNameStored] = React.useState(false);
   console.log(socket_key);
@@ -40,37 +36,6 @@ const Page = ({ stateChanger }) => {
     setNameStored(true);
   };
 
-  const sendMessage = React.useCallback(() => {
-    var data = [localStorage.getItem("name"), message];
-    if (
-      message === "" ||
-      message === null ||
-      data[0] === "" ||
-      data[0] === null
-    ) {
-      if (data[0] === "" || data[0] === null) {
-        alert("Invalid Name!! Please reload the page.");
-        return;
-      }
-      return;
-    }
-
-    socket.emit("message", data);
-    setMessage("");
-  }, [message]);
-
-  React.useEffect(() => {
-    if (nameStored) {
-      document.getElementsByClassName(
-        "chatRoomFinalMessageInputContainer"
-      )[0].onkeydown = function (e) {
-        if (e.keyCode === 13) {
-          sendMessage();
-        }
-      };
-    }
-  }, [nameStored, sendMessage]);
-
   const closeChatRoom = () => {
     stateChanger(false);
   };
@@ -83,44 +48,117 @@ const Page = ({ stateChanger }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
-          className="chatRoomInitialInput"
+          className="chatRoomInitialInput chatRoomFinalMessageInputContainer"
         />
         <button
           onClick={() => handleClickSubmit(name)}
           className="chatRoomInitialButton"
-          style={{ marginTop: "10px" }}
-        >
-          Enter
-        </button>
+        ></button>
       </React.Fragment>
     );
   } else {
+    const Chat = () => {
+      const [messages, setMessages] = React.useState([]);
+      React.useEffect(() => {
+        socket.on("recieve_message", (data) => {
+          console.log("running twice");
+          setMessages([...messages, data]);
+        });
+      }, [messages]);
+
+      return (
+        <React.Fragment>
+          <div
+            className="chatRoomFinalChatContainer"
+            style={{ overflowY: "scroll" }}
+          >
+            {messages.map((message, index) => {
+              return (
+                <div className="chatRoomFinalChat" key={index}>
+                  <span className="chatRoomFinalChatName">
+                    {message[0]}&nbsp;:&nbsp;
+                  </span>
+                  <span className="chatRoomFinalChatMessage">{message[1]}</span>
+                </div>
+              );
+            })}
+          </div>
+        </React.Fragment>
+      );
+    };
+
+    const ChatInput = () => {
+      const [message, setMessage] = React.useState("");
+      const sendMessage = React.useCallback(() => {
+        var data = [localStorage.getItem("name"), message];
+        if (
+          message === "" ||
+          message === null ||
+          data[0] === "" ||
+          data[0] === null
+        ) {
+          if (data[0] === "" || data[0] === null) {
+            alert("Invalid Name!! Please reload the page.");
+            return;
+          }
+          return;
+        }
+
+        setMessage("");
+        socket.emit("message", data);
+      }, [message]);
+      React.useEffect(() => {
+        if (nameStored) {
+          document.getElementsByClassName(
+            "chatRoomFinalMessageInputContainer"
+          )[0].onkeydown = function (e) {
+            if (e.keyCode === 13) {
+              sendMessage();
+            }
+          };
+        }
+        if (!nameStored) {
+          document.getElementsByClassName("chatRoomInitialInput")[0].onkeydown =
+            function (e) {
+              if (e.keyCode === 13) {
+                handleClickSubmit(name);
+              }
+            };
+        }
+      }, [sendMessage]);
+      return (
+        <div className="chatRoomFinalMessage">
+          <div className="chatRoomFinalMessageContainer">
+            <input
+              type="text"
+              className="chatRoomFinalMessageInputContainer"
+              placeholder="Send Message"
+              value={message}
+              onChange={(e) => {
+                console.log(e.target.value);
+                setMessage(e.target.value);
+              }}
+            />
+          </div>
+          <div className="chatRoomFinalClose">
+            <div
+              className="chatRoomFinalCloseBtnContainer"
+              onClick={() => {
+                closeChatRoom();
+              }}
+            ></div>
+          </div>
+        </div>
+      );
+    };
+
     return (
       <React.Fragment>
         <div className="chatRoomFinalContainer">
-          <div className="chatRoomFinalContent"></div>
-          <div className="chatRoomFinalMessage">
-            <div className="chatRoomFinalMessageContainer">
-              <input
-                type="text"
-                className="chatRoomFinalMessageInputContainer"
-                placeholder="Send Message"
-                value={message}
-                onChange={(e) => {
-                  console.log(e.target.value);
-                  setMessage(e.target.value);
-                }}
-              />
-            </div>
-            <div className="chatRoomFinalSend">
-              <div
-                className="chatRoomFinalCloseBtnContainer"
-                onClick={() => {
-                  closeChatRoom();
-                }}
-              ></div>
-            </div>
+          <div className="chatRoomFinalContent">
+            <Chat />
           </div>
+          <ChatInput />
         </div>
       </React.Fragment>
     );

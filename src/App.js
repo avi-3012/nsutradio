@@ -5,7 +5,18 @@ import MainPage from "./components/pages/mainPage";
 import Chatroom from "./components/pages/chatRoom";
 
 function App() {
-  const [page, setPage] = React.useState(false);
+  const Main = () => {
+    const [page, setPage] = React.useState(false);
+    return (
+      <React.Fragment>
+        {page ? (
+          <MainPage stateChanger={setPage} />
+        ) : (
+          <InitialPage stateChanger={setPage} />
+        )}
+      </React.Fragment>
+    );
+  };
   return (
     <div>
       <div
@@ -22,7 +33,7 @@ function App() {
         - Developed by Electroverts -
       </div>
       <div className="container">
-        {page ? <MainPage /> : <InitialPage stateChanger={setPage} />}
+        <Main />
         <Chatroom />
       </div>
     </div>
