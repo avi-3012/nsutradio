@@ -27,11 +27,17 @@ const InitialPage = ({ stateChanger }) => {
   };
   const Final = () => {
     const [name, setName] = React.useState("");
+    const smile = ":)";
     if (nameStored) {
       setTimeout(() => {
         stateChanger(true);
       }, 4000);
-      return <div className="initialPageContentText">Welcome!!</div>;
+      return (
+        <div className="initialPageContentText">
+          Welcome!!
+          <div style={{ marginTop: "45px", fontSize: "14px" }}>{smile}</div>
+        </div>
+      );
     }
     return (
       <React.Fragment>

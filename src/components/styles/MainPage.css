@@ -68,6 +68,23 @@
   width: 20vw;
   min-width: 16rem;
 }
+.nowPlaying {
+  color: grey;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+.Leave {
+  color: red;
+  font-weight: bold;
+  margin-top: 40px;
+  font-size: 14px;
+}
+.Leave:hover {
+  cursor: pointer;
+  color: rgb(200, 0, 0);
+  border-bottom: 1px solid rgb(200, 0, 0);
+}
 
 @keyframes mainPagePlayer {
   0% {

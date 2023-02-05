@@ -1,12 +1,5 @@
 import React from "react";
-// import { Socket } from "socket.io-client";
-import io from "socket.io-client";
 import "../styles/chatRoom.css";
-
-const socket_key = process.env.REACT_APP_SOCKET_URL;
-console.log(socket_key);
-const socket = io.connect(socket_key);
-socket.emit("join");
 
 const PageBtn = ({ stateChanger }) => {
   return (
@@ -19,10 +12,9 @@ const PageBtn = ({ stateChanger }) => {
   );
 };
 
-const Page = ({ stateChanger }) => {
+const Page = ({ stateChanger, socket }) => {
   const [name, setName] = React.useState("");
   const [nameStored, setNameStored] = React.useState(false);
-  console.log(socket_key);
 
   React.useEffect(() => {
     console.log("useEffect running");
@@ -65,6 +57,9 @@ const Page = ({ stateChanger }) => {
           console.log("running twice");
           setMessages([...messages, data]);
         });
+        return () => {
+          socket.off("recieve_message");
+        };
       }, [messages]);
 
       return (
@@ -166,16 +161,16 @@ const Page = ({ stateChanger }) => {
   }
 };
 
-const Chatroom = () => {
+const Chatroom = ({ socket }) => {
   const [page, setPage] = React.useState(false);
 
   return (
     <React.Fragment>
       <div className="chatRoomContainer">
         {page ? (
-          <Page stateChanger={setPage} />
+          <Page stateChanger={setPage} socket={socket} />
         ) : (
-          <PageBtn stateChanger={setPage} />
+          <PageBtn stateChanger={setPage} socket={socket} />
         )}
       </div>
     </React.Fragment>

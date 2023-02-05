@@ -1,0 +1,69 @@
+.mainPlaylistContainer {
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
+  justify-content: flex-end;
+  position: absolute;
+  color: white;
+  top: 0px;
+  right: 0px;
+  height: 100vh;
+  width: 305px;
+}
+
+.playlistBtnContainer {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.playlistBtn {
+  display: flex;
+  color: white;
+  flex-direction: row;
+  font-family: Arial;
+  font-weight: bold;
+}
+.playlistBtn:hover {
+  cursor: pointer;
+}
+.playlistBtnIcon {
+  box-sizing: border-box;
+  margin-right: 2px;
+  width: 20px;
+  height: 15px;
+  background-image: url("../../../public/img/up-arrow-icon.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: contain;
+}
+
+.playlistInputContainer {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+.playlistInput {
+  border: 1px solid grey;
+  border-radius: 10px;
+  background-color: transparent;
+  padding-left: 10px;
+  height: 30px;
+  width: 100%;
+  color: white;
+}
+.playlistCloseIcon {
+  width: 25px;
+  margin-right: 5px;
+  /* height: 25px; */
+  background-image: url("../../../public/img/close-icon.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: contain;
+}
+.playlistCloseIcon:hover {
+  cursor: pointer;
+}
+.playlistInput:focus {
+  outline: none;
+}
