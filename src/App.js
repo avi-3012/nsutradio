@@ -6,13 +6,15 @@ import Chatroom from "./components/pages/chatRoom";
 import Playlist from "./components/pages/playlist";
 import io from "socket.io-client";
 
+console.log("Hi there!");
+
 const socket_key = process.env.REACT_APP_SOCKET_URL;
 console.log(socket_key);
 const socket = io.connect(socket_key);
 socket.emit("join");
 
 function App() {
-  // console.log(playlist);
+  // console.log(playlist)
 
   const Main = ({ socket }) => {
     // console.log(playlist);
