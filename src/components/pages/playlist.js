@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/playlist.css";
+import moment from "moment";
 
 const Playlist = ({ socket }) => {
   const [page, setPage] = React.useState(false);
@@ -20,44 +21,43 @@ const Playlist = ({ socket }) => {
     );
   };
   const PlaylistContent = ({ stateChanger }) => {
-    const [nameStored, setNameStored] = React.useState("");
-    const [song, setSong] = React.useState("");
+    const Input = ({ stateChanger }) => {
+      const [nameStored, setNameStored] = React.useState("");
+      const [song, setSong] = React.useState("");
 
-    React.useEffect(() => {
-      console.log("useEffect running");
-      const nameCheck = localStorage.getItem("name");
-      if (nameCheck) {
-        setNameStored(nameCheck);
-      }
-    }, []);
+      React.useEffect(() => {
+        console.log("useEffect running");
+        const nameCheck = localStorage.getItem("name");
+        if (nameCheck) {
+          setNameStored(nameCheck);
+        }
+      }, []);
 
-    const sendSong = React.useCallback(() => {
-      var data = [nameStored, song];
-      socket.emit("send_song", data);
-      setSong("");
-    }, [nameStored, song]);
+      const sendSong = React.useCallback(async () => {
+        if (!song) return;
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${song}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
+        );
+        const data = await response.json();
+        const duration = data.items[0].contentDetails.duration;
+        const durationInSeconds = moment.duration(duration).asSeconds();
+        var form = [nameStored, song, durationInSeconds];
+        socket.emit("send_song", form);
+        setSong("");
+      }, [nameStored, song]);
 
-    React.useEffect(() => {
-      if (nameStored) {
-        document.getElementsByClassName("playlistInput")[0].onkeydown =
-          function (e) {
-            if (e.keyCode === 13) {
-              sendSong();
-            }
-          };
-      }
-      //   if (!nameStored) {
-      //     document.getElementsByClassName("chatRoomInitialInput")[0].onkeydown =
-      //       function (e) {
-      //         if (e.keyCode === 13) {
-      //         }
-      //       };
-      //   }
-    }, [sendSong, nameStored]);
+      React.useEffect(() => {
+        if (nameStored) {
+          document.getElementsByClassName("playlistInput")[0].onkeydown =
+            function (e) {
+              if (e.keyCode === 13) {
+                sendSong();
+              }
+            };
+        }
+      }, [sendSong, nameStored]);
 
-    return (
-      <React.Fragment>
-        <div className="playlistContentContainer"></div>
+      return (
         <div className="playlistInputContainer">
           <div
             className="playlistCloseIcon"
@@ -73,6 +73,29 @@ const Playlist = ({ socket }) => {
             }}
           />
         </div>
+      );
+    };
+
+    return (
+      <React.Fragment>
+        {/* <Content/> */}
+        <div className="playlistContentContainer"></div>
+        <Input stateChanger={stateChanger} />
+        {/* <div className="playlistInputContainer">
+          <div
+            className="playlistCloseIcon"
+            onClick={() => stateChanger(false)}
+          ></div>
+          <input
+            type="text"
+            className="playlistInput"
+            value={song}
+            placeholder="Add Song"
+            onChange={(e) => {
+              setSong(e.target.value);
+            }}
+          />
+        </div> */}
       </React.Fragment>
     );
   };

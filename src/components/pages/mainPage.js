@@ -4,8 +4,6 @@ import "../styles/playlist.css";
 import YouTube from "react-youtube";
 
 const MainPage = ({ stateChanger, socket }) => {
-  // const [count] = React.useState(0);
-  // const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
   const [update, setUpdate] = React.useState(false);
 
   socket.on("update_song", () => {
