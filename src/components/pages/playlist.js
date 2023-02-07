@@ -35,23 +35,25 @@ const Playlist = ({ socket }) => {
       }, []);
 
       const sendSong = React.useCallback(async () => {
-        const videoSeacrh = (term) => {
+        var videoId = "";
+        const videoSearch = (term) => {
           YTSearch(
             { key: "AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU", term: term },
             (videos) => {
               console.log(videos);
+              videoId = videos[0].id.videoId;
             }
           );
         };
-        videoSeacrh(song);
         if (!song) return;
+        videoSearch(song);
         const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${song}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
+          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
         );
         const data = await response.json();
         const duration = data.items[0].contentDetails.duration;
         const durationInSeconds = moment.duration(duration).asSeconds();
-        var form = [nameStored, song, durationInSeconds];
+        var form = [nameStored, videoId, durationInSeconds];
         socket.emit("send_song", form);
         setSong("");
       }, [nameStored, song]);
