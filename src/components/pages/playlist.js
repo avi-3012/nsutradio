@@ -48,6 +48,7 @@ const Playlist = ({ socket }) => {
         };
         if (!song) return;
         videoSearch(song);
+        console.log(videoId);
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
         );
