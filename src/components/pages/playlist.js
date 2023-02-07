@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/playlist.css";
 import moment from "moment";
+import YTSearch from "youtube-api-search";
 
 const Playlist = ({ socket }) => {
   const [page, setPage] = React.useState(false);
@@ -34,6 +35,15 @@ const Playlist = ({ socket }) => {
       }, []);
 
       const sendSong = React.useCallback(async () => {
+        const videoSeacrh = (term) => {
+          YTSearch(
+            { key: "AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU", term: term },
+            (videos) => {
+              console.log(videos);
+            }
+          );
+        };
+        videoSeacrh(song);
         if (!song) return;
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${song}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
