@@ -153,21 +153,6 @@ const MainPage = ({ stateChanger, socket }) => {
       <React.Fragment>
         <div className="initialPageContentText">nsutRADIO</div>
         <Player />
-        {/* <div className="nowPlaying">Now Playing</div>
-        <div
-          className="mainPageAudioTitle"
-          style={{
-            color: "white",
-            height: "20px",
-            boxSizing: "border-box",
-            width: "200px",
-            overflowX: "scroll",
-            overflowY: "hidden",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <div className="audioTitle">{audioTitle}</div>
-        </div> */}
         <div className="Leave" onClick={handleLeaveClick}>
           Leave
         </div>
