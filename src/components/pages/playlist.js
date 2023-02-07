@@ -42,6 +42,7 @@ const Playlist = ({ socket }) => {
             (videos) => {
               console.log(videos);
               videoId = videos[0].id.videoId;
+              console.log(videoId);
             }
           );
         };
