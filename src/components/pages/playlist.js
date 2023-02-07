@@ -39,25 +39,34 @@ const Playlist = ({ socket }) => {
         const videoSearch = (term) => {
           YTSearch(
             { key: "AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU", term: term },
-            (videos) => {
+            async (videos) => {
               console.log(videos);
               videoId = videos[0].id.videoId;
               console.log(videoId);
+              const response = await fetch(
+                `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
+              );
+              const data = await response.json();
+              const duration = data.items[0].contentDetails.duration;
+              const durationInSeconds = moment.duration(duration).asSeconds();
+              var form = [nameStored, videoId, durationInSeconds];
+              socket.emit("send_song", form);
+              setSong("");
             }
           );
         };
         if (!song) return;
         videoSearch(song);
         console.log(videoId);
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
-        );
-        const data = await response.json();
-        const duration = data.items[0].contentDetails.duration;
-        const durationInSeconds = moment.duration(duration).asSeconds();
-        var form = [nameStored, videoId, durationInSeconds];
-        socket.emit("send_song", form);
-        setSong("");
+        // const response = await fetch(
+        //   `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
+        // );
+        // const data = await response.json();
+        // const duration = data.items[0].contentDetails.duration;
+        // const durationInSeconds = moment.duration(duration).asSeconds();
+        // var form = [nameStored, videoId, durationInSeconds];
+        // socket.emit("send_song", form);
+        // setSong("");
       }, [nameStored, song]);
 
       React.useEffect(() => {
