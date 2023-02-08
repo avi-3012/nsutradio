@@ -75,7 +75,6 @@ const MainPage = ({ stateChanger, socket }) => {
     const onEnd = () => {
       console.log("Entering onEnd");
       setPlaying(false);
-      setUpdate(!update);
       console.log("Exiting onEnd");
     };
     const onPlay = (event) => {
