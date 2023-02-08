@@ -12,7 +12,8 @@ const MainPage = ({ stateChanger, socket }) => {
 
   const Player = () => {
     console.log("Entering Player");
-    const [seekPosition] = React.useState(0);
+    const [seeking, setSeeking] = React.useState(false);
+    const [seekPosition, setPosition] = React.useState(90);
     const [playing, setPlaying] = React.useState(false);
     const [playlist, setPlaylist] = React.useState("");
     // const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
@@ -25,8 +26,13 @@ const MainPage = ({ stateChanger, socket }) => {
         const response = await fetch(
           `${process.env.REACT_APP_SOCKET_URL}/api/song`
         );
+        const response2 = await fetch(
+          `${process.env.REACT_APP_SOCKET_URL}/api/song/position`
+        );
+        const position = Number(await response2.text());
+        console.log("Position: ", position);
         const playlist = await response.text();
-
+        setPosition(position);
         setPlaylist(playlist);
 
         console.log("Exiting fetchSong", playlist);
@@ -63,7 +69,7 @@ const MainPage = ({ stateChanger, socket }) => {
         // https://developers.google.com/youtube/player_parameters
         autoplay: 1,
         disablekb: 1,
-        controls: 0,
+        controls: 1,
       },
     };
     const onEnd = () => {
@@ -72,8 +78,21 @@ const MainPage = ({ stateChanger, socket }) => {
       setUpdate(!update);
       console.log("Exiting onEnd");
     };
-    const onReady = (event) => {
-      event.target.seekTo(seekPosition);
+    const onPlay = (event) => {
+      // event.target.pauseVideo();
+      setPlaying(true);
+      if (seeking) {
+        return;
+      }
+      setSeeking(true);
+      console.log("Entering onReady");
+      // event.target.playVideo();
+      event.target.seekTo(seekPosition, () => {
+        // event.target.playVideo();
+        setSeeking(false);
+      });
+      console.log("Seeking to: ", seekPosition);
+      console.log("Exiting onReady");
     };
 
     const Playing = () => {
@@ -121,9 +140,9 @@ const MainPage = ({ stateChanger, socket }) => {
           <YouTube
             videoId={playlist}
             opts={opts}
-            onReady={onReady}
+            onPlay={onPlay}
             onEnd={onEnd}
-            onPlay={() => setPlaying(true)}
+            // onPlay={() => setPlaying(true)}
           />
         </div>
         <Playing />
