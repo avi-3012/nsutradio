@@ -26,16 +26,11 @@ const MainPage = ({ stateChanger, socket }) => {
         const response = await fetch(
           `${process.env.REACT_APP_SOCKET_URL}/api/song`
         );
-        const response2 = await fetch(
-          `${process.env.REACT_APP_SOCKET_URL}/api/song/position`
-        );
-        const position = Number(await response2.text());
-        console.log("Position: ", position);
-        const playlist = await response.text();
-        setPosition(position);
-        setPlaylist(playlist);
+        const data = await response.json();
+        setPosition(data.position);
+        setPlaylist(data.song);
 
-        console.log("Exiting fetchSong", playlist);
+        console.log("Exiting fetchSong", data.song + " " + data.position);
       };
 
       if (!playing) {

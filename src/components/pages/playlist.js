@@ -46,10 +46,15 @@ const Playlist = ({ socket }) => {
               const response = await fetch(
                 `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
               );
+              const response2 = await fetch(
+                `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU`
+              );
+              const data2 = await response2.json();
               const data = await response.json();
+              const title = data2.items[0].snippet.title;
               const duration = data.items[0].contentDetails.duration;
               const durationInSeconds = moment.duration(duration).asSeconds();
-              var form = [nameStored, videoId, durationInSeconds];
+              var form = [nameStored, videoId, durationInSeconds, title];
               socket.emit("send_song", form);
               setSong("");
             }
@@ -99,11 +104,55 @@ const Playlist = ({ socket }) => {
       );
     };
 
+    const PlaylistContentFinal = () => {
+      const [playlist, setPlaylist] = React.useState([]);
+      const [update, setUpdate] = React.useState(false);
+
+      React.useEffect(() => {
+        const fetchPlaylist = async () => {
+          const response = await fetch(
+            `${process.env.REACT_APP_SOCKET_URL}/api/playlist`
+          );
+          const data = await response.json();
+          setPlaylist(data);
+          console.log(data);
+        };
+        fetchPlaylist();
+      }, [update]);
+
+      socket.on("playlist_update", () => {
+        setUpdate(!update);
+      });
+
+      return (
+        <div className="playlistContentContainer">
+          {playlist.map((item, index) => {
+            return (
+              <div className="playlistItemContainer" key={item._id}>
+                <div className="playlistItem">
+                  <div className="playlistItemTitle" id={`index${index}`}>
+                    {index + 1}. {item.title}
+                  </div>
+                  <div className="playlistItemName">By {item.name}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
     return (
       <React.Fragment>
         {/* <Content/> */}
-        <div className="playlistContentContainer"></div>
+        <PlaylistContentFinal />
         <Input stateChanger={stateChanger} />
+        <div className="infoIcon">
+          <div className="infoIconText">
+            Enter the "title" of the song to add it in playlist. For more
+            accurate results, add the artist name as well.
+          </div>
+        </div>
         {/* <div className="playlistInputContainer">
           <div
             className="playlistCloseIcon"
