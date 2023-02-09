@@ -106,40 +106,50 @@ const Playlist = ({ socket }) => {
 
     const PlaylistContentFinal = () => {
       const [playlist, setPlaylist] = React.useState([]);
-      const [update, setUpdate] = React.useState(false);
-
       React.useEffect(() => {
-        const fetchPlaylist = async () => {
-          const response = await fetch(
-            `${process.env.REACT_APP_SOCKET_URL}/api/playlist`
-          );
-          const data = await response.json();
-          setPlaylist(data);
+        socket.emit("playlist");
+      }, []);
+
+      // React.useEffect(() => {
+      //   const fetchPlaylist = async () => {
+      //     const response = await fetch(
+      //       `${process.env.REACT_APP_SOCKET_URL}/api/playlist`
+      //     );
+      //     const data = await response.json();
+      //     setPlaylist(data);
+      //     console.log(data);
+      //   };
+      //   fetchPlaylist();
+      // }, []);
+      React.useEffect(() => {
+        socket.on("playlist_update", (data) => {
           console.log(data);
-        };
-        fetchPlaylist();
-      }, [update]);
+          setPlaylist(data);
+          socket.off("playlist_update");
+        });
+      }, [playlist]);
 
-      socket.on("playlist_update", () => {
-        setUpdate(!update);
-      });
-
-      return (
-        <div className="playlistContentContainer">
-          {playlist.map((item, index) => {
-            return (
-              <div className="playlistItemContainer" key={item._id}>
-                <div className="playlistItem">
-                  <div className="playlistItemTitle" id={`index${index}`}>
-                    {index + 1}. {item.title}
+      try {
+        return (
+          <div className="playlistContentContainer">
+            {playlist.map((item, index) => {
+              return (
+                <div className="playlistItemContainer" key={item._id}>
+                  <div className="playlistItem">
+                    <div className="playlistItemTitle" id={`index${index}`}>
+                      {index + 1}. {item.title}
+                    </div>
+                    <div className="playlistItemName">By {item.name}</div>
                   </div>
-                  <div className="playlistItemName">By {item.name}</div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      );
+              );
+            })}
+          </div>
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      return <div className="playlistContentContainer"></div>;
     };
 
     return (

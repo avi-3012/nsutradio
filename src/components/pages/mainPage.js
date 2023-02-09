@@ -13,32 +13,43 @@ const MainPage = ({ stateChanger, socket }) => {
   const Player = () => {
     console.log("Entering Player");
     const [seeking, setSeeking] = React.useState(false);
-    const [seekPosition, setPosition] = React.useState(90);
+    const [seekPosition, setPosition] = React.useState(0);
     const [playing, setPlaying] = React.useState(false);
     const [playlist, setPlaylist] = React.useState("");
     // const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
 
+    // React.useEffect(() => {
+    //   console.log("Entering useEffect");
+
+    //   const fetchSong = async () => {
+    //     console.log("Entering fetchSong");
+    //     const response = await fetch(
+    //       `${process.env.REACT_APP_SOCKET_URL}/api/song`
+    //     );
+    //     const data = await response.json();
+    //     setPosition(data.position);
+    //     setPlaylist(data.song);
+
+    //     console.log("Exiting fetchSong", data.song + " " + data.position);
+    //   };
+
+    //   if (!playing) {
+    //     console.log("Entering useEffect if");
+    //     fetchSong();
+    //     console.log("Exiting useEffect if");
+    //   }
+    //   console.log("Exiting useEffect");
+    // }, [playing]);
     React.useEffect(() => {
-      console.log("Entering useEffect");
-
-      const fetchSong = async () => {
-        console.log("Entering fetchSong");
-        const response = await fetch(
-          `${process.env.REACT_APP_SOCKET_URL}/api/song`
-        );
-        const data = await response.json();
-        setPosition(data.position);
-        setPlaylist(data.song);
-
-        console.log("Exiting fetchSong", data.song + " " + data.position);
-      };
-
-      if (!playing) {
-        console.log("Entering useEffect if");
-        fetchSong();
-        console.log("Exiting useEffect if");
-      }
-      console.log("Exiting useEffect");
+      socket.on("fetch_song", (data) => {
+        console.log("Entering fetch_song", data);
+        setPlaylist(data);
+        socket.off("fetch_song");
+      });
+      socket.on("fetch_position", (data) => {
+        setPosition(data);
+        socket.off("fetch_position");
+      });
     }, [playing]);
 
     // React.useEffect(() => {
@@ -107,6 +118,7 @@ const MainPage = ({ stateChanger, socket }) => {
           fetchData();
         }
       }, []);
+
       return (
         <React.Fragment>
           <div className="nowPlaying">Now Playing</div>

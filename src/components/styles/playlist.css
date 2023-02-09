@@ -87,7 +87,7 @@
   padding-right: 15px;
 }
 #index0 {
-  color: #99e199;
+  color: #909090;
   animation: playlistTitle 10s linear infinite;
 }
 .infoIcon {
@@ -121,16 +121,4 @@
   position: absolute;
   z-index: 1;
   width: 300px;
-}
-
-@keyframes playlistTitle {
-  0% {
-    color: #8000ff;
-  }
-  50% {
-    color: #c300ff;
-  }
-  100% {
-    color: #8000ff;
-  }
 }
