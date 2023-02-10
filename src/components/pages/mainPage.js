@@ -194,7 +194,7 @@ const MainPage = ({ stateChanger, socket }) => {
       const [users, setUsers] = React.useState(0);
       socket.on("fetch_ping", (data) => {
         const data2 = Date.now();
-        setPing(data2 - data[0]);
+        setPing(Math.abs(data2 - data[0]));
         setUsers(data[1]);
         console.log("Ping: ", Math.abs(data2 - data[0]));
       });
