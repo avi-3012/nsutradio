@@ -129,12 +129,6 @@ const Playlist = ({ socket }) => {
         });
       }, [playlist]);
 
-      socket.on("fetch_ping", (data) => {
-        const data2 = Date.now();
-        console.log(data2 - data);
-        socket.off("fetch_ping");
-      });
-
       try {
         return (
           <div className="playlistContentContainer">
