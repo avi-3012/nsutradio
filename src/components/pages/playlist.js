@@ -127,7 +127,7 @@ const Playlist = ({ socket }) => {
           setPlaylist(data);
           socket.off("playlist_update");
         });
-      }, []);
+      }, [playlist]);
 
       try {
         return (
