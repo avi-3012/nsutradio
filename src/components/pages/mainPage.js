@@ -196,7 +196,7 @@ const MainPage = ({ stateChanger, socket }) => {
         const data2 = Date.now();
         setPing(data2 - data[0]);
         setUsers(data[1]);
-        console.log("Ping: ", data2 - data[0]);
+        console.log("Ping: ", Math.abs(data2 - data[0]));
       });
       return (
         <React.Fragment>
