@@ -77,13 +77,51 @@
 .Leave {
   color: red;
   font-weight: bold;
-  margin-top: 40px;
+  margin-top: 25px;
   font-size: 14px;
 }
 .Leave:hover {
   cursor: pointer;
   color: rgb(200, 0, 0);
   border-bottom: 1px solid rgb(200, 0, 0);
+}
+
+.ping {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  font-weight: bolder;
+  font-size: 13px;
+}
+
+.pingIcon {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  background-image: url("../../../public/img/ping-icon.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: contain;
+}
+.users {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  color: white;
+  font-weight: bolder;
+  font-size: 13px;
+}
+
+.usersIcon {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  box-sizing: border-box;
+  background-image: url("../../../public/img/user-icon.png");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: contain;
 }
 
 @keyframes mainPagePlayer {

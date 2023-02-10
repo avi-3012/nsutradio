@@ -140,6 +140,23 @@ const MainPage = ({ stateChanger, socket }) => {
       );
     };
 
+    // const Ping = () => {
+    //   const [ping, setPing] = React.useState(0);
+    //   socket.on("fetch_ping", (data) => {
+    //     const data2 = Date.now();
+    //     setPing(data2 - data);
+    //     console.log("Ping: ", data2 - data);
+    //   });
+    //   return (
+    //     <React.Fragment>
+    //       <div className="ping">
+    //         <div className="pingIcon"></div>
+    //         {ping}
+    //       </div>
+    //     </React.Fragment>
+    //   );
+    // };
+
     return (
       <React.Fragment>
         <div id="player">
@@ -152,6 +169,7 @@ const MainPage = ({ stateChanger, socket }) => {
           />
         </div>
         <Playing />
+        {/* <Ping /> */}
         {/* <div className="nowPlaying">Now Playing</div>
         <div
           className="mainPageAudioTitle"
@@ -171,6 +189,37 @@ const MainPage = ({ stateChanger, socket }) => {
     );
   };
   const Main = () => {
+    const Ping = () => {
+      const [ping, setPing] = React.useState(0);
+      const [users, setUsers] = React.useState(0);
+      socket.on("fetch_ping", (data) => {
+        const data2 = Date.now();
+        setPing(data2 - data[0]);
+        setUsers(data[1]);
+        console.log("Ping: ", data2 - data);
+      });
+      return (
+        <React.Fragment>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              justifyContent: "space-between",
+              width: "120px",
+            }}
+          >
+            <div className="users">
+              <div className="usersIcon"></div>
+              {users}
+            </div>
+            <div className="ping">
+              <div className="pingIcon"></div>
+              {ping}
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    };
     const handleLeaveClick = () => {
       stateChanger(false);
     };
@@ -178,6 +227,7 @@ const MainPage = ({ stateChanger, socket }) => {
       <React.Fragment>
         <div className="initialPageContentText">nsutRADIO</div>
         <Player />
+        <Ping />
         <div className="Leave" onClick={handleLeaveClick}>
           Leave
         </div>
