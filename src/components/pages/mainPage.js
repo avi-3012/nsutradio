@@ -197,6 +197,7 @@ const MainPage = ({ stateChanger, socket }) => {
         setPing(Math.abs(data2 - data[0]));
         setUsers(data[1]);
         console.log("Ping: ", Math.abs(data2 - data[0]));
+        socket.off("fetch_ping");
       });
       return (
         <React.Fragment>
