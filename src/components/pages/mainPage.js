@@ -99,7 +99,7 @@ const MainPage = ({ stateChanger, socket }) => {
       console.log("Seeking to: ", seekPosition);
       console.log("Exiting onReady");
     };
-    const onPause = (event) => {
+    const onStateChange = (event) => {
       event.target.playVideo();
     };
 
@@ -168,7 +168,8 @@ const MainPage = ({ stateChanger, socket }) => {
             opts={opts}
             onPlay={onPlay}
             onEnd={onEnd}
-            onPause={onPause}
+            // onPause={onPause}
+            onStateChange={onStateChange}
             // onPlay={() => setPlaying(true)}
           />
         </div>
