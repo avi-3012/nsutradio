@@ -76,6 +76,7 @@ const MainPage = ({ stateChanger, socket }) => {
         autoplay: 1,
         disablekb: 1,
         controls: 1,
+        playsinline: 1,
       },
     };
     const onEnd = () => {
