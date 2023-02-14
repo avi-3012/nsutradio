@@ -99,6 +99,9 @@ const MainPage = ({ stateChanger, socket }) => {
       console.log("Seeking to: ", seekPosition);
       console.log("Exiting onReady");
     };
+    const onPause = (event) => {
+      event.target.playVideo();
+    };
 
     const Playing = () => {
       const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
@@ -165,6 +168,7 @@ const MainPage = ({ stateChanger, socket }) => {
             opts={opts}
             onPlay={onPlay}
             onEnd={onEnd}
+            onPause={onPause}
             // onPlay={() => setPlaying(true)}
           />
         </div>
