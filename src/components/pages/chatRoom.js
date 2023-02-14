@@ -25,8 +25,12 @@ const Page = ({ stateChanger, socket }) => {
   }, []);
 
   const handleClickSubmit = (name) => {
-    localStorage.setItem("name", name);
-    setNameStored(true);
+    if (name) {
+      localStorage.setItem("name", name);
+      setNameStored(true);
+    } else {
+      alert("Please enter a name");
+    }
   };
 
   const closeChatRoom = () => {

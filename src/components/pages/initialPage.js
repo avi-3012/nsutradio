@@ -65,9 +65,13 @@ const InitialPage = ({ stateChanger }) => {
     setPage(true);
   };
   const handleClickSubmit = React.useCallback((name) => {
-    localStorage.setItem("name", name);
     console.log("clicked");
-    setNameStored(true);
+    if (name) {
+      localStorage.setItem("name", name);
+      setNameStored(true);
+    } else {
+      alert("Please enter a name");
+    }
   }, []);
   return (
     <div className="initialPageMainContainer">
