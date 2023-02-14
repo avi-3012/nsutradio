@@ -37,6 +37,7 @@ const Playlist = ({ socket }) => {
       const sendSong = React.useCallback(async () => {
         var videoId = "";
         const videoSearch = (term) => {
+          setSong("");
           YTSearch(
             { key: "AIzaSyBq9Vj9JGZ2gO8CYujvXYaxOIsJUlZZVuU", term: term },
             async (videos) => {
@@ -56,7 +57,6 @@ const Playlist = ({ socket }) => {
               const durationInSeconds = moment.duration(duration).asSeconds();
               var form = [nameStored, videoId, durationInSeconds, title];
               socket.emit("send_song", form);
-              setSong("");
             }
           );
         };
