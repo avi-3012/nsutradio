@@ -4,7 +4,15 @@ import InitialPage from "./components/pages/initialPage";
 import MainPage from "./components/pages/mainPage";
 import Chatroom from "./components/pages/chatRoom";
 import Playlist from "./components/pages/playlist";
+import "cordova-plugin-background-mode";
 import io from "socket.io-client";
+
+if (window.cordova && window.cordova.plugins.backgroundMode) {
+  window.cordova.plugins.backgroundMode.enable();
+  window.cordova.plugins.backgroundMode.on("activate", () => {
+    console.log("activated");
+  });
+}
 
 console.log("Hi there!");
 

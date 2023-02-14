@@ -2,14 +2,6 @@ import React from "react";
 import "../styles/MainPage.css";
 import "../styles/playlist.css";
 import YouTube from "react-youtube";
-import "cordova-plugin-background-mode";
-
-if (window.cordova && window.cordova.plugins.backgroundMode) {
-  window.cordova.plugins.backgroundMode.enable();
-  window.cordova.plugins.backgroundMode.on("activate", () => {
-    console.log("activated");
-  });
-}
 
 const MainPage = ({ stateChanger, socket }) => {
   const [update, setUpdate] = React.useState(false);
