@@ -2,6 +2,14 @@ import React from "react";
 import "../styles/MainPage.css";
 import "../styles/playlist.css";
 import YouTube from "react-youtube";
+import "cordova-plugin-background-mode";
+
+if (window.cordova && window.cordova.plugins.backgroundMode) {
+  window.cordova.plugins.backgroundMode.enable();
+  window.cordova.plugins.backgroundMode.on("activate", () => {
+    console.log("activated");
+  });
+}
 
 const MainPage = ({ stateChanger, socket }) => {
   const [update, setUpdate] = React.useState(false);
@@ -99,9 +107,6 @@ const MainPage = ({ stateChanger, socket }) => {
       console.log("Seeking to: ", seekPosition);
       console.log("Exiting onReady");
     };
-    const onPause = (event) => {
-      setUpdate(!update);
-    };
 
     const Playing = () => {
       const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
@@ -169,7 +174,6 @@ const MainPage = ({ stateChanger, socket }) => {
             onPlay={onPlay}
             onEnd={onEnd}
             // onPause={onPause}
-            onPause={onPause}
             // onPlay={() => setPlaying(true)}
           />
         </div>
