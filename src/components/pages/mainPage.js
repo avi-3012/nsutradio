@@ -12,7 +12,6 @@ const MainPage = ({ stateChanger, socket }) => {
 
   const Player = () => {
     console.log("Entering Player");
-    const [updatePlayer, setUpdatePlayer] = React.useState(false);
     const [seeking, setSeeking] = React.useState(false);
     const [seekPosition, setPosition] = React.useState(0);
     const [playing, setPlaying] = React.useState(false);
@@ -101,10 +100,6 @@ const MainPage = ({ stateChanger, socket }) => {
       console.log("Exiting onReady");
     };
 
-    const onPause = (event) => {
-      setUpdatePlayer(!updatePlayer);
-    };
-
     const Playing = () => {
       const [audioTitle, setAudioTitle] = React.useState("Nothing Playing");
 
@@ -170,8 +165,6 @@ const MainPage = ({ stateChanger, socket }) => {
             opts={opts}
             onPlay={onPlay}
             onEnd={onEnd}
-            onPause={onPause}
-            // onPlay={() => setPlaying(true)}
           />
         </div>
         <Playing />
